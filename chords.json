@@ -16,6 +16,12 @@
     "barre": 2
   },
   {
+    "name": "Bm",
+    "pattern": "x24432",
+    "fingers": "013421",
+    "barre": 2
+  },
+  {
     "name": "C",
     "pattern": "022100",
     "fingers": "023100"
@@ -56,11 +62,5 @@
     "pattern": "x13321",
     "fingers": "013421",
     "barre": 6
-  },
-  {
-    "name": "C#",
-    "pattern": "xx0232",
-    "fingers": "000132",
-    "tuning": "D#,G#,C#,F#,A#,D#"
   }
 ]
