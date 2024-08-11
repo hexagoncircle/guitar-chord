@@ -44,7 +44,7 @@ h1 code {
 }
 
 main {
-  max-width: 70rem;
+  max-width: 80rem;
   margin-inline: auto;
 }
 
@@ -84,34 +84,14 @@ pre {
   font-weight: 500;
   text-transform: uppercase;
   border: none;
-  color: white;
+  color: lightgray;
   background: none;
   cursor: pointer;
-  opacity: 0.8;
-}
-
-.code-example-copy::after {
-  content: "✅";
-  display: block;
-  position: absolute;
-  top: 0;
-  font-size: 1rem;
-  right: 0;
-  opacity: 0;
-  scale: 0;
-  translate: 50% -50%;
-  transition: 200ms ease-out;
-  transition-property: scale, opacity;
+  transform: translate(0, 0);
 }
 
 .code-example-copy.copied {
-  opacity: 1;
-}
-
-.code-example-copy.copied::after {
-  scale: 1;
-  opacity: 1;
-  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: white;
 }
 
 .icon-link {
