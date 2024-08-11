@@ -1,0 +1,66 @@
+[
+  {
+    "name": "A",
+    "pattern": "x02220",
+    "fingers": "002130"
+  },
+  {
+    "name": "Am",
+    "pattern": "x02210",
+    "fingers": "002310"
+  },
+  {
+    "name": "B",
+    "pattern": "x24442",
+    "fingers": "012341",
+    "barre": 2
+  },
+  {
+    "name": "C",
+    "pattern": "022100",
+    "fingers": "023100"
+  },
+  {
+    "name": "D",
+    "pattern": "xx0232",
+    "fingers": "000132"
+  },
+  {
+    "name": "Dm",
+    "pattern": "xx0231",
+    "fingers": "000231"
+  },
+  {
+    "name": "E",
+    "pattern": "022100",
+    "fingers": "023100"
+  },
+  {
+    "name": "Em",
+    "pattern": "022000",
+    "fingers": "023000"
+  },
+  {
+    "name": "F",
+    "pattern": "133211",
+    "fingers": "134211",
+    "barre": 1
+  },
+  {
+    "name": "G",
+    "pattern": "320033",
+    "fingers": "210034"
+  },
+  {
+    "name": "Eb minor",
+    "pattern": "x13321",
+    "fingers": "013421",
+    "barre": 6
+  },
+  {
+    "name": "C#",
+    "pattern": "xx0232",
+    "fingers": "000132",
+    "tuning": "D#,G#,C#,F#,A#,D#"
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "name": "guitar-chord",
+  "description": "A web component for displaying a guitar chord chart",
+  "version": "0.1.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexagoncircle/guitar-chord.git"
+  },
+  "author": {
+    "name": "Ryan Mulligan",
+    "email": "hey@ryanmulligan.dev",
+    "url": "https://ryanmulligan.dev/"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "shiki": "^1.12.1",
+    "vite": "^5.4.0"
+  },
+  "dependencies": {
+    "tweakpane": "^4.0.4"
+  }
+}
