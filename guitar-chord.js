@@ -177,7 +177,7 @@ class GuitarChord extends HTMLElement {
 
   static css = `
     :host {
-      --_color: var(--guitarChord-color, CanvasText);
+      --_color: var(--guitarChord-color, currentColor);
       --_text-color: var(--guitarChord-text-color, var(--_color));
       --_marker-color: var(--guitarChord-marker-color, var(--_color));
       --_string-size: 2px;
