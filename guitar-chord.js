@@ -208,16 +208,18 @@ class GuitarChord extends HTMLElement {
       background-image: 
         linear-gradient(transparent 80%, var(--_color) 80%),
         linear-gradient(
-          90deg,
           var(--_color) var(--_string-size),
-          transparent var(--_string-size) calc(var(--_string-size) * 2),
-          transparent calc(var(--_string-size) * 2)
+          transparent var(--_string-size)
         ),
         linear-gradient(
+          90deg,
           var(--_color) var(--_string-size),
           transparent var(--_string-size)
         );
-      background-position: calc(50% - var(--_string-size) * 0.5) 0;
+      background-position: 
+        0 1px, 
+        0 0, 
+        calc(50% - var(--_string-size) * 0.5) 0;
       background-size: var(--guitarChord-grid-size) var(--guitarChord-grid-size);
       border-block-end: var(--_string-size) solid
         var(--_color);
