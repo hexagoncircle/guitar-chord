@@ -1,7 +1,7 @@
 import "./style.css";
 import chords from "./chords.json";
 import { Pane } from "tweakpane";
-import { codeToHtml } from "shiki";
+import { codeToHtml } from "shiki/bundle/web";
 
 function setAttributes(el, attrs) {
   for (const [key, value] of Object.entries(attrs)) {
