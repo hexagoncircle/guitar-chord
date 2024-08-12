@@ -122,23 +122,25 @@ class GuitarChord extends HTMLElement {
   renderMarkers() {
     if (!this.elements.markers || !this.pattern) return;
 
-    const [pattern, barreValue] = this.barre ? this.setupBarre(this.pattern) : [this.pattern, null];
+    const [pattern, barreValue] = this.barre
+      ? this.setupBarreChord(this.pattern)
+      : [this.pattern, null];
     const markers = document.createDocumentFragment();
 
     for (let i = 0; i < pattern.length; i++) {
       if (i >= this.stringCount) break;
 
-      const isBarred = pattern[i] === barreValue;
+      const isBarreChord = pattern[i] === barreValue;
       const el = document.createElement("span");
 
       el.classList.add("marker");
-      el.classList.toggle("barre", isBarred);
+      el.classList.toggle("barre", isBarreChord);
       el.style.setProperty("--col", i + 1);
       el.style.setProperty("--row", this.setRow(pattern[i]));
       el.setAttribute("data-action", this.setMarkerAction(pattern[i]));
 
       // Show fret number if barre value is 2 or greater on top row
-      isBarred &&
+      isBarreChord &&
         this.barre > 1 &&
         pattern[i] === "1" &&
         el.setAttribute("data-barre-fret", this.barre);
@@ -189,17 +191,17 @@ class GuitarChord extends HTMLElement {
     this.elements.name.replaceChildren(names);
   }
 
-  setupBarre(pattern) {
+  setupBarreChord(pattern) {
     if (!pattern.length) return [];
 
     // Filter out "x" value, convert to number type, find smallest value to represent the barred fret, convert back to string.
     const barreValue = Math.min(...pattern.filter((v) => v !== "x").map(Number)).toString();
-    let isBarred = false;
+    let isBarreValueSet = false;
 
     const barrePattern = pattern.filter((value) => {
       if (value === barreValue) {
-        if (isBarred) return;
-        isBarred = true;
+        if (isBarreValueSet) return;
+        isBarreValueSet = true;
         return true;
       }
 
