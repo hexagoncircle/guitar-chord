@@ -75,7 +75,7 @@ Chord markers and finger positions are represented as six-character strings. The
 
 ## Customize styles
 
-A handful of color, font, and layout styles can be customized by declaring values on the available CSS custom properties. For example, the following styles will cascade down to all `guitar-chord` elements. Try it out in the [demo](https://hexagoncircle.github.io/guitar-chord/).
+This component attempts to adapt to light and dark appearances by default. However, some of the visual styles can be customized by using the available CSS custom properties. For example, the following styles will cascade down to all `guitar-chord` elements. Try it out in the [demo](https://hexagoncircle.github.io/guitar-chord/).
 
 ```css
 :root {
