@@ -5,6 +5,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎸</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>guitar-chord Web Component</title>
+    <script type="module" src="/guitar-chord.js"></script>
   </head>
   <body>
     <main>
@@ -22,11 +23,7 @@
           </a>
           <div class="code-example-wrapper">
             <article class="code-example" data-code="html">
-              <pre>
-                <code>
-&lt;guitar-chord display-name="A" readable-name="A major" pattern="x02220" fingers="002130"&gt;&lt;/guitar-chord&gt;
-                  </code>
-              </pre>
+              <pre class="shiki rose-pine" style="background-color:#191724;color:#e0def4"><code>&lt;guitar-chord display-name="A" readable-name="A major" pattern="x02220" fingers="002130"&gt;&lt;/guitar-chord&gt;</code></pre>
             </article>
             <button id="copy-html" class="code-example-copy">Copy</button>
           </div>
@@ -36,6 +33,5 @@
       <chord-list class="grid"></chord-list>
     </main>
     <script type="module" src="/demo.js"></script>
-    <script type="module" src="/guitar-chord.js"></script>
   </body>
 </html>
