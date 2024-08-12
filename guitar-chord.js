@@ -12,11 +12,13 @@ class GuitarChord extends HTMLElement {
   }
 
   get pattern() {
-    return this.getAttribute("pattern");
+    // Only allow "x" (mute) or numbers
+    return this.parseAttributeToArray("pattern", /[^0-9x]/g);
   }
 
   get fingers() {
-    return this.getAttribute("fingers");
+    // Only allow numbers
+    return this.parseAttributeToArray("fingers", /[^0-9]/g);
   }
 
   get barre() {
@@ -34,11 +36,11 @@ class GuitarChord extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [sheet];
 
     this.stringCount = 6;
-    this.classnames = ["name", "chart", "markers", "fingers"];
+    this.classnames = ["name", "chart", "fingers", "markers"];
     this.setupTemplate();
     this.setupElements();
     this.setGridLines();
-    this.setName();
+    this.renderChordName();
     this.renderMarkers();
     this.renderFingerPositions();
   }
@@ -48,7 +50,7 @@ class GuitarChord extends HTMLElement {
 
     switch (name) {
       case "name":
-        this.setName();
+        this.renderChordName();
         break;
       case "pattern":
         this.renderMarkers();
@@ -62,12 +64,18 @@ class GuitarChord extends HTMLElement {
     }
   }
 
+  parseAttributeToArray(str, regex) {
+    const value = this.getAttribute(str);
+
+    if (!value) return;
+
+    return value.toLowerCase().replace(regex, "").split("");
+  }
+
   renderMarkers() {
     if (!this.elements.markers || !this.pattern) return;
 
-    // Only allow "x" or number; strip out other characters
-    const arr = this.pattern.replace(/[^0-9x]/g, "").split("");
-    const [pattern, barreValue] = this.barre ? this.setBarre(arr) : [arr, null];
+    const [pattern, barreValue] = this.barre ? this.setBarre(this.pattern) : [this.pattern, null];
     const markers = document.createDocumentFragment();
 
     for (let i = 0; i < pattern.length; i++) {
@@ -97,14 +105,13 @@ class GuitarChord extends HTMLElement {
   renderFingerPositions() {
     if (!this.elements.fingers || !this.fingers) return;
 
-    const fingers = this.fingers.replace(/[^0-9]/g, "").split("");
     const positions = document.createDocumentFragment();
 
-    for (let i = 0; i < fingers.length; i++) {
+    for (let i = 0; i < this.fingers.length; i++) {
       if (i >= this.stringCount) break;
 
       const el = document.createElement("span");
-      el.textContent = Number(fingers[i]) !== 0 ? fingers[i] : "";
+      el.textContent = this.fingers[i] !== "0" ? this.fingers[i] : "";
       positions.append(el);
     }
 
@@ -165,7 +172,7 @@ class GuitarChord extends HTMLElement {
     }
   }
 
-  setName() {
+  renderChordName() {
     if (!this.elements.name) return;
 
     this.elements.name.textContent = this.name;
