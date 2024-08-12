@@ -2,7 +2,7 @@
 
 A Web Component that displays a guitar chord chart. Check out the [demo](https://hexagoncircle.github.io/guitar-chord/). 🎸
 
-_work in progress_
+✨ _work in progress_ ✨
 
 ## Usage
 
