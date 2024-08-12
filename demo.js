@@ -3,25 +3,6 @@ import chords from "./chords.json";
 import { Pane } from "tweakpane";
 import { codeToHtml } from "shiki";
 
-function generateChordList() {
-  const fragment = document.createDocumentFragment();
-
-  for (let i = 0; i < chords.length; i++) {
-    const el = document.createElement("guitar-chord");
-
-    setAttributes(el, {
-      name: chords[i].name,
-      pattern: chords[i].pattern,
-      fingers: chords[i].fingers,
-      barre: chords[i].barre,
-    });
-
-    fragment.append(el);
-  }
-
-  chordList.append(fragment);
-}
-
 function setAttributes(el, attrs) {
   for (const [key, value] of Object.entries(attrs)) {
     if (value === true) {
@@ -34,10 +15,31 @@ function setAttributes(el, attrs) {
   }
 }
 
+function generateChordList() {
+  const fragment = document.createDocumentFragment();
+
+  for (let i = 0; i < chords.length; i++) {
+    const el = document.createElement("guitar-chord");
+
+    setAttributes(el, {
+      "display-name": chords[i].displayName,
+      "readable-name": chords[i].readableName,
+      pattern: chords[i].pattern,
+      fingers: chords[i].fingers,
+      barre: chords[i].barre,
+    });
+
+    fragment.append(el);
+  }
+
+  chordList.append(fragment);
+}
+
 async function updateChord(index) {
   const chord = chords[index];
   const attrs = {
-    name: chord.name,
+    "display-name": chord.displayName,
+    "readable-name": chord.readableName,
     pattern: chord.pattern,
     fingers: chord.fingers,
     barre: chord.barre,
@@ -100,7 +102,9 @@ pane
   .addBlade({
     view: "list",
     label: "chord",
-    options: [...chords.map(({ name }, i) => ({ text: name || "unknown chord", value: i }))],
+    options: [
+      ...chords.map(({ displayName }, i) => ({ text: displayName || "unknown chord", value: i })),
+    ],
     value: 0,
   })
   .on("change", (e) => {

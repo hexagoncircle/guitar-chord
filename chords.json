@@ -1,64 +1,76 @@
 [
   {
-    "name": "A",
+    "displayName": "A",
+    "readableName": "A major",
     "pattern": "x02220",
     "fingers": "002130"
   },
   {
-    "name": "Am",
+    "displayName": "Am",
+    "readableName": "A minor",
     "pattern": "x02210",
     "fingers": "002310"
   },
   {
-    "name": "B",
+    "displayName": "B",
+    "readableName": "B major",
     "pattern": "x24442",
     "fingers": "012341",
     "barre": 2
   },
   {
-    "name": "Bm",
+    "displayName": "Bm",
+    "readableName": "B minor",
     "pattern": "x24432",
     "fingers": "013421",
     "barre": 2
   },
   {
-    "name": "C",
+    "displayName": "C",
+    "readableName": "C major",
     "pattern": "022100",
     "fingers": "023100"
   },
   {
-    "name": "D",
+    "displayName": "D",
+    "readableName": "D major",
     "pattern": "xx0232",
     "fingers": "000132"
   },
   {
-    "name": "Dm",
+    "displayName": "Dm",
+    "readableName": "D minor",
     "pattern": "xx0231",
     "fingers": "000231"
   },
   {
-    "name": "E",
+    "displayName": "E",
+    "readableName": "E major",
     "pattern": "022100",
     "fingers": "023100"
   },
   {
-    "name": "Em",
+    "displayName": "Em",
+    "readableName": "E minor",
     "pattern": "022000",
     "fingers": "023000"
   },
   {
-    "name": "F",
+    "displayName": "F",
+    "readableName": "F major",
     "pattern": "133211",
     "fingers": "134211",
     "barre": 1
   },
   {
-    "name": "G",
+    "displayName": "G",
+    "readableName": "G major",
     "pattern": "320033",
     "fingers": "210034"
   },
   {
-    "name": "Eb minor",
+    "displayName": "Eb minor",
+    "readableName": "E flat minor",
     "pattern": "x13321",
     "fingers": "013421",
     "barre": 6

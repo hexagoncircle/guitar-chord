@@ -5,15 +5,18 @@ class GuitarChord extends HTMLElement {
     }
   }
 
-  static observedAttributes = ["name", "pattern", "fingers", "barre"];
+  static observedAttributes = ["display-name", "readable-name", "barre", "fingers", "pattern"];
 
-  get name() {
-    return this.getAttribute("name");
+  get displayName() {
+    return this.getAttribute("display-name");
   }
 
-  get pattern() {
-    // Only allow "x" (mute) or numbers
-    return this.parseAttributeToArray("pattern", /[^0-9x]/g);
+  get readableName() {
+    return this.getAttribute("readable-name");
+  }
+
+  get barre() {
+    return this.getAttribute("barre");
   }
 
   get fingers() {
@@ -21,8 +24,9 @@ class GuitarChord extends HTMLElement {
     return this.parseAttributeToArray("fingers", /[^0-9]/g);
   }
 
-  get barre() {
-    return this.getAttribute("barre");
+  get pattern() {
+    // Only allow "x" (mute) or numbers
+    return this.parseAttributeToArray("pattern", /[^0-9x]/g);
   }
 
   constructor() {
@@ -36,27 +40,38 @@ class GuitarChord extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [sheet];
 
     this.stringCount = 6;
-    this.classnames = ["name", "chart", "fingers", "markers"];
+    this.fingerNames = ["index", "middle", "ring", "pinky"];
+    this.templateParts = [
+      { className: "name", tag: "p" },
+      { className: "instructions", tag: "ul" },
+      { className: "chart", tag: "div" },
+      { className: "fingers", tag: "div" },
+      { className: "markers", tag: "div" },
+    ];
+
     this.setupTemplate();
     this.setupElements();
     this.setGridLines();
+    this.renderFingerPositions();
     this.renderChordName();
     this.renderMarkers();
-    this.renderFingerPositions();
   }
 
   attributeChangedCallback(name) {
     if (!this.elements) return;
 
     switch (name) {
-      case "name":
+      case "display-name":
         this.renderChordName();
         break;
-      case "pattern":
-        this.renderMarkers();
+      case "readable-name":
+        this.renderChordName();
         break;
       case "fingers":
         this.renderFingerPositions();
+        break;
+      case "pattern":
+        this.renderMarkers();
         break;
       case "barre":
         this.renderMarkers();
@@ -72,10 +87,42 @@ class GuitarChord extends HTMLElement {
     return value.toLowerCase().replace(regex, "").split("");
   }
 
+  renderInstructions(pattern, barreValue) {
+    if (!this.elements.instructions) return;
+
+    const listEl = document.createDocumentFragment();
+
+    const insertText = (i) => {
+      const value = this.stringCount - i;
+      const fingerValue = this.fingers[i] - 1;
+      let text = `String ${value}: `;
+
+      if (pattern[i] === "0") {
+        text += `open`;
+      } else if (pattern[i] === "x") {
+        text += `mute`;
+      } else if (barreValue === pattern[i] || !pattern[i]) {
+        text += `barred on fret ${this.barre} by index finger`;
+      } else {
+        text += `place ${this.fingerNames[fingerValue]} finger on fret ${pattern[i]}`;
+      }
+
+      return text;
+    };
+
+    for (let i = 0; i < this.stringCount; i++) {
+      const el = document.createElement("li");
+      el.textContent = insertText(i);
+      listEl.append(el);
+    }
+
+    this.elements.instructions.replaceChildren(listEl);
+  }
+
   renderMarkers() {
     if (!this.elements.markers || !this.pattern) return;
 
-    const [pattern, barreValue] = this.barre ? this.setBarre(this.pattern) : [this.pattern, null];
+    const [pattern, barreValue] = this.barre ? this.setupBarre(this.pattern) : [this.pattern, null];
     const markers = document.createDocumentFragment();
 
     for (let i = 0; i < pattern.length; i++) {
@@ -100,6 +147,7 @@ class GuitarChord extends HTMLElement {
     }
 
     this.elements.markers.replaceChildren(markers);
+    this.renderInstructions(pattern, barreValue);
   }
 
   renderFingerPositions() {
@@ -118,27 +166,30 @@ class GuitarChord extends HTMLElement {
     this.elements.fingers.replaceChildren(positions);
   }
 
-  setupElements() {
-    this.elements = {};
+  renderChordName() {
+    if (!this.elements.name) return;
 
-    this.classnames.forEach((cls) => {
-      this.elements[cls] = this.shadowRoot.querySelector(`.${cls}`);
-    });
+    if (!this.readableName) {
+      this.elements.name.textContent = this.displayName;
+      return;
+    }
+
+    const names = document.createDocumentFragment();
+
+    const displayText = document.createElement("span");
+    const readableText = document.createElement("span");
+
+    displayText.ariaHidden = true;
+    displayText.textContent = this.displayName;
+    names.append(displayText);
+    readableText.classList.add("visually-hidden");
+    readableText.textContent = this.readableName;
+    names.append(readableText);
+
+    this.elements.name.replaceChildren(names);
   }
 
-  setupTemplate() {
-    const sections = document.createDocumentFragment();
-
-    this.classnames.forEach((cls) => {
-      const el = document.createElement("div");
-      el.classList.add(cls);
-      sections.append(el);
-    });
-
-    this.shadowRoot.append(sections);
-  }
-
-  setBarre(pattern) {
+  setupBarre(pattern) {
     if (!pattern.length) return [];
 
     // Filter out "x" value, convert to number type, find smallest value to represent the barred fret, convert back to string.
@@ -158,6 +209,27 @@ class GuitarChord extends HTMLElement {
     return [barrePattern, barreValue];
   }
 
+  setupElements() {
+    this.elements = {};
+
+    this.templateParts.forEach(({ className }) => {
+      this.elements[className] = this.shadowRoot.querySelector(`.${className}`);
+    });
+  }
+
+  setupTemplate() {
+    const sections = document.createDocumentFragment();
+
+    this.templateParts.forEach(({ className, tag }) => {
+      const el = document.createElement(tag);
+      el.classList.add(className);
+      el.classList.toggle("visually-hidden", className === "instructions");
+      sections.append(el);
+    });
+
+    this.shadowRoot.append(sections);
+  }
+
   setGridLines() {
     this.elements.chart.style.setProperty("--guitarChord-grid-size", `${100 / this.stringCount}%`);
   }
@@ -170,12 +242,6 @@ class GuitarChord extends HTMLElement {
     } else {
       return "press";
     }
-  }
-
-  renderChordName() {
-    if (!this.elements.name) return;
-
-    this.elements.name.textContent = this.name;
   }
 
   setRow(value) {
@@ -244,6 +310,7 @@ class GuitarChord extends HTMLElement {
     }
 
     .name {
+      margin: 0;
       grid-area: name;
       position: relative;
       align-self: start;
@@ -252,6 +319,16 @@ class GuitarChord extends HTMLElement {
       font-size: var(--guitarname-fontSize, calc(0.2rem + 8cqi));
       font-weight: var(--guitarname-fontWeight, normal);
       color: var(--_text-color);
+    }
+
+    .visually-hidden {
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
     }
 
     .markers {
