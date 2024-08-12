@@ -86,3 +86,10 @@ A handful of color, font, and layout styles can be customized by declaring value
   --guitarChord-fontFamily: monospace;
 }
 ```
+
+## Accessibility
+
+I've made some attempts at improving the screen reader experience for the rendered chart. Please share any additional ideas in the [issue queue](https://github.com/hexagoncircle/guitar-chord/issues)!
+
+- When supplied, the `readable-name` will be visually hidden but read aloud by screen readers.
+- A visually-hidden list of written instructions is automatically generated as a way to describe the string number and finger placement for the chord.
