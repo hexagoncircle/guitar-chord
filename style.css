@@ -122,7 +122,8 @@ pre {
   justify-items: center;
   grid-template-rows: 1fr auto;
   max-width: 100%;
-  min-height: 100dvh;
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
 .feature header {
