@@ -273,13 +273,33 @@ class GuitarChord extends HTMLElement {
       display: grid;
     }
 
-    .chart {
-      box-sizing: border-box;
-      grid-area: chart;
+    .visually-hidden {
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+
+    .name {
+      margin: 0;
+      grid-area: name;
       position: relative;
-      display: grid;
-      grid-template-rows: repeat(6, 1fr);
-      justify-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: var(--guitarname-fontSize, calc(0.2rem + 8cqi));
+      font-weight: var(--guitarname-fontWeight, normal);
+      color: var(--_text-color);
+    }
+
+    :is(.chart, .markers) {
+      aspect-ratio: var(--guitarChord-aspectRatio, 1);
+    }
+
+    .chart {
+      grid-area: chart;
       background-image: 
         linear-gradient(transparent 80%, var(--_color) 80%),
         linear-gradient(
@@ -296,41 +316,10 @@ class GuitarChord extends HTMLElement {
         0 0, 
         calc(50% - var(--_string-size) * 0.5) 0;
       background-size: var(--guitarChord-grid-size) var(--guitarChord-grid-size);
-      border-block-end: var(--_string-size) solid
-        var(--_color);
       background-repeat: repeat-x, repeat, repeat;
       mask-image: linear-gradient(to bottom, transparent calc(var(--guitarChord-grid-size) - 2%), black calc(var(--guitarChord-grid-size) - 2%));
-    }
-
-    .chart > * {
-      grid-area: 1 / 1 / -1 / -1;
-      display: grid;
-    }
-
-    :is(.chart, .markers) {
-      aspect-ratio: var(--guitarChord-aspectRatio, 1);
-    }
-
-    .name {
-      margin: 0;
-      grid-area: name;
-      position: relative;
-      align-self: start;
-      justify-content: center;
-      text-align: center;
-      font-size: var(--guitarname-fontSize, calc(0.2rem + 8cqi));
-      font-weight: var(--guitarname-fontWeight, normal);
-      color: var(--_text-color);
-    }
-
-    .visually-hidden {
-      clip: rect(0 0 0 0);
-      clip-path: inset(50%);
-      height: 1px;
-      overflow: hidden;
-      position: absolute;
-      white-space: nowrap;
-      width: 1px;
+      border-block-end: var(--_string-size) solid
+        var(--_color);
     }
 
     .markers {
@@ -338,6 +327,19 @@ class GuitarChord extends HTMLElement {
       grid-template-columns: repeat(6, 1fr);
       grid-template-rows: repeat(6, 1fr);
       place-items: center;
+    }
+
+    .marker {
+      grid-column: var(--col);
+      grid-row: var(--row);
+      position: relative;
+      display: grid;
+      place-items: center;
+      grid-template-areas: "marker";
+      width: var(--_marker-size);
+      height: var(--_marker-size);
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 var(--_string-size) var(--_marker-color);
     }
 
     .fingers {
@@ -352,27 +354,6 @@ class GuitarChord extends HTMLElement {
     .fingers::after {
       grid-column: 1;
       grid-row: 1;
-    }
-
-    /* Maintain text height when empty */
-    :where(.name, .fingers):empty::after {
-      content: "0";
-      opacity: 0;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .marker {
-      grid-column: var(--col);
-      grid-row: var(--row);
-      position: relative;
-      display: grid;
-      place-items: center;
-      grid-template-areas: "marker";
-      width: var(--_marker-size);
-      height: var(--_marker-size);
-      border-radius: 50%;
-      box-shadow: inset 0 0 0 var(--_string-size) var(--_marker-color);
     }
 
     .barre {
