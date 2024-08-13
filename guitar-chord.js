@@ -51,7 +51,7 @@ class GuitarChord extends HTMLElement {
 
     this.setupTemplate();
     this.setupElements();
-    this.setGridLines();
+    this.renderGridLines();
     this.renderFingerPositions();
     this.renderChordName();
     this.renderMarkers();
@@ -191,6 +191,10 @@ class GuitarChord extends HTMLElement {
     this.elements.name.replaceChildren(names);
   }
 
+  renderGridLines() {
+    this.elements.chart.style.setProperty("--guitarChord-grid-size", `${100 / this.stringCount}%`);
+  }
+
   setupBarreChord(pattern) {
     if (!pattern.length) return [];
 
@@ -230,10 +234,6 @@ class GuitarChord extends HTMLElement {
     });
 
     this.shadowRoot.append(sections);
-  }
-
-  setGridLines() {
-    this.elements.chart.style.setProperty("--guitarChord-grid-size", `${100 / this.stringCount}%`);
   }
 
   setMarkerAction(value) {
