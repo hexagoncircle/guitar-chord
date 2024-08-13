@@ -65,9 +65,8 @@ pre {
 .code-example-wrapper {
   position: relative;
   margin-block-start: 0.75rem;
-  display: flex;
-  flex-direction: column;
   max-width: 100%;
+  width: 100%;
 }
 
 .code-example {
@@ -119,7 +118,6 @@ pre {
 
 .feature {
   display: grid;
-  justify-items: center;
   grid-template-rows: 1fr auto;
   max-width: 100%;
   min-height: 100vh;
@@ -140,6 +138,7 @@ pre {
 }
 
 .feature guitar-chord {
+  justify-self: center;
   align-self: center;
   width: 100%;
   max-width: 20rem;
