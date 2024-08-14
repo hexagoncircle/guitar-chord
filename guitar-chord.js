@@ -52,9 +52,9 @@ class GuitarChord extends HTMLElement {
     this.setupElements();
     this.renderGridLines();
     this.renderChordName();
-    this.renderFingerPositions();
     this.renderMarkers();
     this.renderInstructions();
+    this.renderFingerPositions();
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -62,23 +62,20 @@ class GuitarChord extends HTMLElement {
 
     switch (name) {
       case "display-name":
-        this.renderChordName();
-        break;
       case "readable-name":
         this.renderChordName();
         break;
       case "fingers":
         this.renderFingerPositions();
-        this.renderInstructions();
         break;
       case "pattern":
-        this.renderMarkers();
-        this.renderInstructions();
-        break;
       case "barre":
         this.renderMarkers();
-        this.renderInstructions();
         break;
+    }
+
+    if (["fingers", "pattern", "barre"].includes(name)) {
+      this.renderInstructions();
     }
   }
 
@@ -139,18 +136,17 @@ class GuitarChord extends HTMLElement {
   }
 
   renderInstructions() {
-    if (!this.pattern || !this.fingers) {
+    if (!this.pattern) {
       this.elements.instructions.replaceChildren();
       return;
     }
 
-    const listEl = document.createDocumentFragment();
     const [pattern, barreValue] = this.barre
       ? this.setupBarreChord(this.pattern)
       : [this.pattern, null];
 
     const insertText = (i) => {
-      const fingerValue = this.fingers ? this.fingers[i] - 1 : "";
+      const fingerValue = this.fingers ? this.fingerNames[this.fingers[i] - 1] : "";
       let text;
 
       if (pattern[i] === "0") {
@@ -160,11 +156,13 @@ class GuitarChord extends HTMLElement {
       } else if (barreValue === pattern[i] || !pattern[i]) {
         text = `barre fret ${this.barre} with index finger`;
       } else {
-        text = `place ${this.fingerNames[fingerValue]} finger on fret ${pattern[i]}`;
+        text = `place ${fingerValue} finger on fret ${pattern[i]}`;
       }
 
       return text;
     };
+
+    const listEl = document.createDocumentFragment();
 
     for (let i = 0; i < this.stringCount; i++) {
       const el = document.createElement("li");
