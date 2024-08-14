@@ -135,8 +135,9 @@ class GuitarChord extends HTMLElement {
     for (let i = 0; i < this.fingers.length; i++) {
       if (i >= this.stringCount) break;
 
+      const fingerValue = this.fingers[i];
       const el = document.createElement("span");
-      el.textContent = this.fingers[i] !== "0" ? this.fingers[i] : "";
+      el.textContent = fingerValue !== "0" ? fingerValue : "";
       positions.append(el);
     }
 
@@ -154,15 +155,16 @@ class GuitarChord extends HTMLElement {
       : [this.pattern, null];
 
     const insertText = (i) => {
+      const patternValue = pattern[i];
       const fingerValue = this.fingers ? this.fingerNames[this.fingers[i] - 1] : "";
-      let text = this.setActionName(pattern[i]);
+      let text = this.setActionName(patternValue);
 
-      if (pattern[i] === "0" || pattern[i] === "x") {
+      if (patternValue === "0" || patternValue === "x") {
         return text;
-      } else if (barreValue === pattern[i] || !pattern[i]) {
+      } else if (barreValue === patternValue || !patternValue) {
         text = `barre fret ${this.barre} with index finger`;
       } else {
-        text += ` ${fingerValue} finger on fret ${pattern[i]}`;
+        text += ` ${fingerValue} finger on fret ${patternValue}`;
       }
 
       return text;
@@ -193,19 +195,20 @@ class GuitarChord extends HTMLElement {
     for (let i = 0; i < pattern.length; i++) {
       if (i >= this.stringCount) break;
 
-      const isBarreChord = pattern[i] === barreValue;
+      const patternValue = pattern[i];
+      const isBarreChord = patternValue === barreValue;
       const el = document.createElement("span");
 
       el.classList.add("marker");
       el.classList.toggle("barre", isBarreChord);
       el.style.setProperty("--col", i + 1);
-      el.style.setProperty("--row", this.setRow(pattern[i]));
-      el.setAttribute("data-action", this.setActionName(pattern[i]));
+      el.style.setProperty("--row", this.setRow(patternValue));
+      el.setAttribute("data-action", this.setActionName(patternValue));
 
       // Show fret number if barre value is 2 or greater on top row
       isBarreChord &&
         this.barre > 1 &&
-        pattern[i] === "1" &&
+        patternValue === "1" &&
         el.setAttribute("data-barre-fret", this.barre);
 
       markers.append(el);
