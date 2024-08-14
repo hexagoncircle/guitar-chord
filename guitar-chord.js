@@ -313,11 +313,23 @@ class GuitarChord extends HTMLElement {
     }
 
     .chart {
+      position: relative;
       align-self: start;
       grid-template-columns: repeat(6, 1fr);
       grid-template-rows: repeat(6, 1fr);
       place-items: center;
       aspect-ratio: var(--guitarChord-aspectRatio, 1);
+      border-block-end: var(--_string-size) solid
+        var(--_color);
+    }
+
+    .chart::before {
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
       background-image: 
         linear-gradient(transparent 80%, var(--_color) 80%),
         linear-gradient(
@@ -336,11 +348,10 @@ class GuitarChord extends HTMLElement {
       background-size: var(--guitarChord-grid-size) var(--guitarChord-grid-size);
       background-repeat: repeat-x, repeat, repeat;
       mask-image: linear-gradient(to bottom, transparent calc(var(--guitarChord-grid-size) - 2%), black calc(var(--guitarChord-grid-size) - 2%));
-      border-block-end: var(--_string-size) solid
-        var(--_color);
     }
 
     .marker {
+      position: relative;
       grid-column: var(--col);
       grid-row: var(--row);
       position: relative;
@@ -351,6 +362,34 @@ class GuitarChord extends HTMLElement {
       height: var(--_marker-size);
       border-radius: 50%;
       box-shadow: inset 0 0 0 var(--_string-size) var(--_marker-color);
+    }
+
+    [data-action=press] {
+      background: var(--_marker-color);
+      box-shadow: unset;
+    }
+
+    [data-action=mute] {
+      background: transparent;
+      box-shadow: unset;
+    }
+
+    [data-action=mute]::before,
+    [data-action=mute]::after {
+      content: "";
+      grid-area: marker;
+      width: var(--_string-size);
+      height: 100%;
+      background: var(--_marker-color);
+      border-radius: 360px;
+    }
+
+    [data-action=mute]::before {
+      rotate: -45deg;
+    }
+
+    [data-action=mute]::after {
+      rotate: 45deg;
     }
 
     .fingers {
@@ -386,34 +425,6 @@ class GuitarChord extends HTMLElement {
       font-size: calc(0.2rem + 4cqi);
       font-weight: var(--guitarChord-barre-fontSize, 600);
       color: var(--_text-color);
-    }
-
-    [data-action=press] {
-      background: var(--_marker-color);
-      box-shadow: unset;
-    }
-
-    [data-action=mute] {
-      background: transparent;
-      box-shadow: unset;
-    }
-
-    [data-action=mute]::before,
-    [data-action=mute]::after {
-      content: "";
-      grid-area: marker;
-      width: var(--_string-size);
-      height: 100%;
-      background: var(--_marker-color);
-      border-radius: 360px;
-    }
-
-    [data-action=mute]::before {
-      rotate: -45deg;
-    }
-
-    [data-action=mute]::after {
-      rotate: 45deg;
     }
   `;
 }
