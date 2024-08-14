@@ -323,11 +323,8 @@ class GuitarChord extends HTMLElement {
 
     .chart::before {
       content: "";
-      width: 100%;
-      height: 100%;
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: 0;
       background-image: 
         linear-gradient(transparent 80%, var(--_color) 80%),
         linear-gradient(
