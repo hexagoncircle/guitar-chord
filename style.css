@@ -2,6 +2,7 @@
   color-scheme: light dark;
   --accent-color: #2563eb;
   --button-bg: #e2e8f0;
+  --pad: clamp(1rem, 4vw, 2rem);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -49,7 +50,7 @@ main {
 }
 
 main > * {
-  padding: clamp(1rem, 4vw, 2rem);
+  padding: var(--pad);
 }
 
 pre {
@@ -111,9 +112,15 @@ pre {
 
 .grid {
   display: grid;
-  column-gap: 2rem;
-  row-gap: 4rem;
-  grid-template-columns: repeat(auto-fill, minmax(min(12rem, 100%), 1fr));
+  column-gap: var(--pad);
+  row-gap: calc(var(--pad) + 1rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--min, 8rem), 100%), 1fr));
+}
+
+@media (min-width: 30rem) {
+  .grid {
+    --min: 12rem;
+  }
 }
 
 .feature {
