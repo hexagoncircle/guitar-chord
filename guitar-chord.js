@@ -20,17 +20,24 @@ class GuitarChord extends HTMLElement {
   }
 
   get fingers() {
-    // Only allow numbers
     return this.parseAttributeToArray("fingers", /[^0-5]/g);
   }
 
   get pattern() {
-    // Only allow "x" (mute) or numbers
     return this.parseAttributeToArray("pattern", /[^0-5x]/g);
   }
 
   constructor() {
     super().attachShadow({ mode: "open" });
+
+    this.stringCount = 6;
+    this.fingerNames = ["index", "middle", "ring", "pinky"];
+    this.templateParts = [
+      { className: "name", tag: "p" },
+      { className: "instructions", tag: "ol", reversed: true },
+      { className: "chart", tag: "div" },
+      { className: "fingers", tag: "div", hide: "reader" },
+    ];
   }
 
   connectedCallback() {
@@ -38,15 +45,6 @@ class GuitarChord extends HTMLElement {
 
     sheet.replaceSync(GuitarChord.css);
     this.shadowRoot.adoptedStyleSheets = [sheet];
-
-    this.stringCount = 6;
-    this.fingerNames = ["index", "middle", "ring", "pinky"];
-    this.templateParts = [
-      { className: "name", tag: "p" },
-      { className: "instructions", tag: "ol", hide: "screen", reversed: true },
-      { className: "chart", tag: "div" },
-      { className: "fingers", tag: "div", hide: "reader" },
-    ];
 
     this.setupTemplate();
     this.setupElements();
@@ -88,8 +86,16 @@ class GuitarChord extends HTMLElement {
   }
 
   renderChordName() {
+    this.elements.name.classList.toggle("visually-hidden", !this.displayName && this.readableName);
+
+    if (!this.displayName && this.readableName) {
+      this.elements.name.textContent = this.readableName;
+      return;
+    }
+
     if (!this.displayName) {
       this.elements.name.replaceChildren();
+      return;
     }
 
     if (!this.readableName) {
@@ -104,9 +110,11 @@ class GuitarChord extends HTMLElement {
 
     displayText.ariaHidden = true;
     displayText.textContent = this.displayName;
-    names.append(displayText);
+
     readableText.classList.add("visually-hidden");
     readableText.textContent = this.readableName;
+
+    names.append(displayText);
     names.append(readableText);
 
     this.elements.name.replaceChildren(names);
@@ -147,16 +155,14 @@ class GuitarChord extends HTMLElement {
 
     const insertText = (i) => {
       const fingerValue = this.fingers ? this.fingerNames[this.fingers[i] - 1] : "";
-      let text;
+      let text = this.setActionName(pattern[i]);
 
-      if (pattern[i] === "0") {
-        text = `open`;
-      } else if (pattern[i] === "x") {
-        text = `mute`;
+      if (pattern[i] === "0" || pattern[i] === "x") {
+        return text;
       } else if (barreValue === pattern[i] || !pattern[i]) {
         text = `barre fret ${this.barre} with index finger`;
       } else {
-        text = `place ${fingerValue} finger on fret ${pattern[i]}`;
+        text += ` ${fingerValue} finger on fret ${pattern[i]}`;
       }
 
       return text;
@@ -194,7 +200,7 @@ class GuitarChord extends HTMLElement {
       el.classList.toggle("barre", isBarreChord);
       el.style.setProperty("--col", i + 1);
       el.style.setProperty("--row", this.setRow(pattern[i]));
-      el.setAttribute("data-action", this.setMarkerAction(pattern[i]));
+      el.setAttribute("data-action", this.setActionName(pattern[i]));
 
       // Show fret number if barre value is 2 or greater on top row
       isBarreChord &&
@@ -239,7 +245,7 @@ class GuitarChord extends HTMLElement {
   setupTemplate() {
     const sections = document.createDocumentFragment();
 
-    this.templateParts.forEach(({ className, tag, hide, reversed }) => {
+    this.templateParts.forEach(({ className, tag, reversed, hide }) => {
       const el = document.createElement(tag);
 
       el.classList.add(className);
@@ -252,13 +258,14 @@ class GuitarChord extends HTMLElement {
     this.shadowRoot.append(sections);
   }
 
-  setMarkerAction(value) {
-    if (value === "x") {
-      return "mute";
-    } else if (value === "0") {
-      return "open";
-    } else {
-      return "press";
+  setActionName(value) {
+    switch (value) {
+      case "x":
+        return "mute";
+      case "0":
+        return "open";
+      default:
+        return "press";
     }
   }
 
@@ -317,8 +324,7 @@ class GuitarChord extends HTMLElement {
       grid-template-rows: repeat(6, 1fr);
       place-items: center;
       aspect-ratio: var(--guitarChord-aspectRatio, 1);
-      border-block-end: var(--_string-size) solid
-        var(--_color);
+      border-block-end: var(--_string-size) solid var(--_color);
     }
 
     .chart::before {
