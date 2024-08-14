@@ -21,12 +21,12 @@ class GuitarChord extends HTMLElement {
 
   get fingers() {
     // Only allow numbers
-    return this.parseAttributeToArray("fingers", /[^0-9]/g);
+    return this.parseAttributeToArray("fingers", /[^0-5]/g);
   }
 
   get pattern() {
     // Only allow "x" (mute) or numbers
-    return this.parseAttributeToArray("pattern", /[^0-9x]/g);
+    return this.parseAttributeToArray("pattern", /[^0-5x]/g);
   }
 
   constructor() {
