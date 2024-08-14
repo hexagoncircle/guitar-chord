@@ -34,7 +34,7 @@ class GuitarChord extends HTMLElement {
     this.fingerNames = ["index", "middle", "ring", "pinky"];
     this.templateParts = [
       { className: "name", tag: "p" },
-      { className: "instructions", tag: "ol", reversed: true },
+      { className: "instructions", tag: "ol", reversed: true, hide: "screen" },
       { className: "chart", tag: "div" },
       { className: "fingers", tag: "div", hide: "reader" },
     ];
