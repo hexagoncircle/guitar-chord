@@ -427,7 +427,7 @@ class GuitarChord extends HTMLElement {
       margin-inline: auto;
       line-height: 1;
       font-size: calc(0.2rem + 4cqi);
-      font-weight: var(--guitarChord-barre-fontSize, 600);
+      font-weight: var(--guitarChord-barre-fontWeight, 600);
       color: var(--_text-color);
     }
   `;
